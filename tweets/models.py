@@ -5,16 +5,16 @@ class Tweet(models.Model):
     tid = models.CharField(max_length=200)
     source = models.URLField()
     text = models.TextField(max_length=1000)
-    posted = models.DateTimeField()
+    tweeted = models.DateTimeField()
 
     @property
     def images(self):
-        return self.image_set.all()
+        return self.tweetimage_set.all()
 
     @property
-    def is_published(self):
-        # a tweet is published if all its images are published
-        return all([img.is_published for img in self.images])
+    def is_posted(self):
+        # a tweet is posted if all its images are posted
+        return all([img.is_posted for img in self.images])
 
 
 class TweetImage(models.Model):
@@ -22,4 +22,4 @@ class TweetImage(models.Model):
     name = models.CharField(max_length=100)
     thumb = models.URLField()
     large = models.URLField()
-    is_published = models.BooleanField(default=False)
+    is_posted = models.BooleanField(default=False)
