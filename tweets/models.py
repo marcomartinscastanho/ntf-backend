@@ -4,7 +4,7 @@ from django.db import models
 class Tweet(models.Model):
     tid = models.CharField(max_length=200)
     source = models.URLField()
-    text = models.TextField(max_length=1000)
+    text = models.TextField(max_length=1000, blank=True)
     tweeted = models.DateTimeField()
 
     @property
@@ -16,13 +16,18 @@ class Tweet(models.Model):
         # a tweet is posted if all its images are posted
         return all([img.is_posted for img in self.images])
 
-    # class Meta:
-    #     ordering = ['created']
+    class Meta:
+        ordering = ['tweeted']
 
 
 class TweetImage(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
+    position = models.PositiveSmallIntegerField(default=1)
     name = models.CharField(max_length=100)
     thumb = models.URLField()
     large = models.URLField()
     is_posted = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['tweet', 'position']
+        # unique_together = ['tweet', 'position']

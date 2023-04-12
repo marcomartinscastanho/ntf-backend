@@ -20,5 +20,13 @@ class TweetAdmin(admin.ModelAdmin):
     is_posted.boolean = True
 
 
+class TweetImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'tweet_tid', 'name', 'is_posted']
+
+    def tweet_tid(self, obj):
+        return obj.tweet.tid
+    tweet_tid.short_description = 'tweet'
+
+
 admin.site.register(Tweet, TweetAdmin)
-admin.site.register(TweetImage)
+admin.site.register(TweetImage, TweetImageAdmin)

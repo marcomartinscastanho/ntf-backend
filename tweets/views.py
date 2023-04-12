@@ -1,7 +1,5 @@
 from rest_framework import generics
 from rest_framework import permissions
-from rest_framework import renderers
-from rest_framework.response import Response
 from tweets.models import Tweet, TweetImage
 from tweets.serializers import TweetImageSerializer, TweetSerializer
 

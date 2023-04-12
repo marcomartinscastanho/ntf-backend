@@ -12,7 +12,7 @@ class TweetImageSerializer(serializers.HyperlinkedModelSerializer):
 
 class TweetSerializer(serializers.HyperlinkedModelSerializer):
     images = serializers.HyperlinkedIdentityField(many=True, view_name='tweetimage-detail', read_only=True)
-    # images = TweetImageSerializer(read_only=True, required=False, many=True)
+    # images = TweetImageSerializer(many=True)
 
     class Meta:
         model = Tweet
