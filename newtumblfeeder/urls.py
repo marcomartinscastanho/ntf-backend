@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from . import views
 
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    path('admin/', admin.site.urls),
+    path('', views.api_root),
     path("tweets/", include("tweets.urls")),
     path("users/", include("users.urls")),
-    path('admin/', admin.site.urls),
     path('auth/', include('rest_framework.urls')),
-
-
 ]
