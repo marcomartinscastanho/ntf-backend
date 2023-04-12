@@ -16,6 +16,9 @@ class Tweet(models.Model):
         # a tweet is posted if all its images are posted
         return all([img.is_posted for img in self.images])
 
+    # class Meta:
+    #     ordering = ['created']
+
 
 class TweetImage(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
