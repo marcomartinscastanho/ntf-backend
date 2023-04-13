@@ -10,10 +10,16 @@ class TweetImageSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'name', 'tweet', 'thumb', 'large', 'is_posted']
 
 
+class ShortTweetImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TweetImage
+        fields = ['name',  'thumb', 'large']
+
+
 class TweetSerializer(serializers.HyperlinkedModelSerializer):
-    images = serializers.HyperlinkedIdentityField(many=True, view_name='tweetimage-detail', read_only=True)
-    # images = TweetImageSerializer(many=True)
+    # images = serializers.HyperlinkedIdentityField(many=True, view_name='tweetimage-detail', read_only=True)
+    images = ShortTweetImageSerializer(many=True)
 
     class Meta:
         model = Tweet
-        fields = ['url', 'id', 'tid', 'source', 'text', 'tweeted', 'images']
+        fields = ['url', 'id', 'author', 'source', 'text', 'tweeted', 'images']
