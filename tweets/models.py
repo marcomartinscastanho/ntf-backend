@@ -3,7 +3,7 @@ from django.db import models
 
 class Tweet(models.Model):
     author = models.CharField(max_length=100, default="a")
-    status_id = models.CharField(max_length=50, default="b")
+    tweet_id = models.CharField(max_length=50, default="b")
     source = models.URLField()
     text = models.TextField(max_length=1000, blank=True)
     tweeted = models.DateTimeField()

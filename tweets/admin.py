@@ -9,7 +9,7 @@ class TweetImageInline(admin.StackedInline):
 
 
 class TweetAdmin(admin.ModelAdmin):
-    list_display = ['status_id', 'author', 'num_images', 'tweeted', 'is_posted']
+    list_display = ['tweet_id', 'author', 'num_images', 'tweeted', 'is_posted']
     list_filter = ['author']
     readonly_fields = ['is_posted']
 
@@ -26,16 +26,16 @@ class TweetAdmin(admin.ModelAdmin):
 
 
 class TweetImageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'tweet_author', 'tweet_status_id', 'position',  'name', 'is_posted']
+    list_display = ['id', 'tweet_author', 'tweet_id', 'position',  'name', 'is_posted']
     list_filter = ['is_posted']
 
     def tweet_author(self, obj):
         return obj.tweet.author
     tweet_author.short_description = 'auhtor'
 
-    def tweet_status_id(self, obj):
-        return obj.tweet.status_id
-    tweet_status_id.short_description = 'tweet'
+    def tweet_id(self, obj):
+        return obj.tweet.tweet_id
+    tweet_id.short_description = 'tweet'
 
 
 admin.site.register(Tweet, TweetAdmin)
