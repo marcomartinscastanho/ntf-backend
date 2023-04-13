@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework import permissions
-from tweets.models import Tweet, TweetImage
-from tweets.serializers import TweetImageSerializer, TweetSerializer
+from .models import Tweet, TweetImage
+from .serializers import TweetImageSerializer, TweetSerializer
 
 
 class TweetList(generics.ListCreateAPIView):
