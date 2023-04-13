@@ -8,7 +8,7 @@ class TweetImageInline(admin.StackedInline):
 
 
 class TweetAdmin(admin.ModelAdmin):
-    list_display = ['tweet_id', 'author', 'num_images', 'tweeted', 'is_posted']
+    list_display = ['id', 'author', 'num_images', 'tweeted', 'is_posted']
     list_filter = ['author']
     readonly_fields = ['is_posted']
 
@@ -33,7 +33,7 @@ class TweetImageAdmin(admin.ModelAdmin):
     tweet_author.short_description = 'auhtor'
 
     def tweet_id(self, obj):
-        return obj.tweet.tweet_id
+        return obj.tweet.id
     tweet_id.short_description = 'tweet'
 
 
