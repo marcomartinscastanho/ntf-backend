@@ -13,7 +13,7 @@ class TweetImageSerializer(serializers.HyperlinkedModelSerializer):
 class ShortTweetImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = TweetImage
-        fields = ['position', 'name',  'thumb', 'large']
+        fields = ['id', 'position', 'name',  'thumb', 'large']
 
 
 class TweetSerializer(serializers.HyperlinkedModelSerializer):

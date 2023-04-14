@@ -1,18 +1,11 @@
 from rest_framework import serializers
-from .models import Blog, Genre, Tag
+from .models import Blog, Tag
 
 
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = ['id',  'name']
-
-
-# FIXME: I don't think this will be needed
-# class GenreSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Genre
-#         fields = ['id',  'name']
 
 
 class TagSerializer(serializers.ModelSerializer):
