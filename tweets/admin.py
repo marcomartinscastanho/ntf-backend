@@ -20,13 +20,30 @@ class TweetAdmin(admin.ModelAdmin):
     is_posted.boolean = True
 
     def num_images(self, obj):
-        return len(obj.images)
+        return len(obj.images.all())
     num_images.short_description = 'images'
 
 
+class IsPostedFilter(admin.SimpleListFilter):
+    title = 'is posted'
+    parameter_name = 'is_posted'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('True', True),
+            ('False', False)
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "True":
+            return queryset.filter(post__isnull=False)
+        elif self.value() == "False":
+            return queryset.filter(post__isnull=True)
+
+
 class TweetImageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'tweet_author', 'tweet_id', 'position',  'name', 'is_posted']
-    list_filter = ['is_posted']
+    list_display = ['id', 'tweet_author', 'tweet_id', 'position',  'name', 'post', 'is_posted']
+    list_filter = [IsPostedFilter]
 
     def tweet_author(self, obj):
         return obj.tweet.author

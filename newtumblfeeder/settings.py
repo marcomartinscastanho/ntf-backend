@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'jet',
     'options.apps.OptionsConfig',
+    'posts.apps.PostsConfig',
     'tweets.apps.TweetsConfig',
     'users.apps.UsersConfig',
     'django.contrib.admin',

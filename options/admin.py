@@ -6,12 +6,8 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
 
 
-class GenreAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['name', 'genres_list']
+    list_display = ['name', 'genres_list', 'num_posts']
 
     def genres_list(self, obj):
         from django.utils.safestring import mark_safe
@@ -21,7 +17,7 @@ class TagAdmin(admin.ModelAdmin):
 
         # urls = []
         # for genre in obj.genres.all():
-        #     url = resolve_url(admin_urlname(Genre._meta, 'change'), genre.pk)
+        #     url = resolve_url(admin_urlname(Tag._meta, 'change'), genre.pk)
         #     urls.append(mark_safe('<a href="{}">{}</a>'.format(url, genre.name)))
         # return ", ".join(urls)
 

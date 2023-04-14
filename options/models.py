@@ -23,10 +23,6 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-    # @property
-    # def num_posts(self):
-    #     return len(self.posts())
-
-    # @property
-    # def posts(self):
-    #     return self.posts_set.all()
+    @property
+    def num_posts(self):
+        return len(self.posts.all())

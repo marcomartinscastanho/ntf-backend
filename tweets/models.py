@@ -9,25 +9,25 @@ class Tweet(models.Model):
     tweeted = models.DateTimeField()
 
     @property
-    def images(self):
-        return self.tweetimage_set.all()
-
-    @property
     def is_posted(self):
         # a tweet is posted if all its images are posted
-        return all([img.is_posted for img in self.images])
+        return all([img.is_posted for img in self.images.all()])
 
     class Meta:
         ordering = ['tweeted']
 
 
 class TweetImage(models.Model):
-    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name="images")
     position = models.PositiveSmallIntegerField(default=1)
     name = models.CharField(max_length=100)
     thumb = models.URLField()
     large = models.URLField()
-    is_posted = models.BooleanField(default=False)
+    post = models.ForeignKey("posts.Post", blank=True, null=True, on_delete=models.SET_NULL, related_name="images")
 
     class Meta:
         ordering = ['tweet', 'position']
+
+    @property
+    def is_posted(self):
+        return self.post != None

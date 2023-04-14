@@ -17,7 +17,7 @@ class TweetDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class TweetImageList(generics.ListCreateAPIView):
-    queryset = TweetImage.objects.all()
+    queryset = TweetImage.objects.filter(post__isnull=True)
     serializer_class = TweetImageSerializer
     permission_classes = [permissions.IsAuthenticated]
 
