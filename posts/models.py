@@ -13,3 +13,11 @@ class Post(models.Model):
     blog = models.ForeignKey(Blog, blank=False, on_delete=models.CASCADE, related_name="posts")
     queue = models.BooleanField(blank=False, default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def rating_code(self):
+        return rating_code_converter(self.rating)
+
+
+def rating_code_converter(r: str) -> int:
+    return 1 + [rating[0] for rating in Post.RATINGS].index(r)
