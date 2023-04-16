@@ -38,12 +38,6 @@ class TweetSerializer(serializers.HyperlinkedModelSerializer):
         return tweet
 
 
-class TweetCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tweet
-        fields = ['id', 'author', 'source', 'text', 'tweeted', 'images']
-
-
 class ShortTweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
