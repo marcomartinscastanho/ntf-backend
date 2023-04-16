@@ -3,7 +3,7 @@ from .models import Post
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['id', 'tweet', 'source', 'num_images', 'rating', 'blog']
+    list_display = ['id', 'tweet', 'source', 'num_images', 'rating', 'blog', 'is_posted']
 
     def num_images(self, obj):
         return len(obj.images.all())

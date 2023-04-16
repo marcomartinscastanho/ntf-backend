@@ -131,3 +131,7 @@ dmypy.json
 # temp
 gallery.json
 bkp*.sqlite3
+
+# celery
+celerybeat-schedule.db
+dump.rdb

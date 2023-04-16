@@ -7,5 +7,6 @@ from .tasks import post_to_newtumbl
 
 
 @receiver(post_save, sender=Post)
-def send_post(sender, instance, **kwargs):
-    post_to_newtumbl.delay(post_id=instance.pk)
+def send_post(sender, instance, created, **kwargs):
+    if created:
+        post_to_newtumbl.delay(post_id=instance.pk)

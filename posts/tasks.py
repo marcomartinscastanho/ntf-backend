@@ -9,22 +9,27 @@ logger = get_task_logger(__name__)
 @shared_task(name="post_to_newtumbl")
 def post_to_newtumbl(post_id):
     post = Post.objects.prefetch_related('images').get(pk=post_id)
-    session_token = login()
-    post_ix = set_post_compose(session_token, post.blog.id)
-    for image in post.images.all():
-        part_ix = upload_with_binary(session_token, image.large, image.name)
-        set_post_part_insert(session_token, post_ix, part_ix)
-    set_post_part_update(session_token, post_ix)
-    set_post_part_update_comment(session_token, post_ix, post.comment)
-    set_post_options(session_token, post_ix, post.rating_code, post.source,
-                     ' '.join([f'#{t.name}' for t in post.tags.all()]))
-    set_post_complete(session_token, post_ix)
-    if post.queue:
-        set_post_queue(session_token, post_ix)
-    else:
-        set_post_publish(session_token, post_ix)
-    logger.info("POSTED!")
-    # print("POSTED!")
+    try:
+        session_token = login()
+        post_ix = set_post_compose(session_token, post.blog.id)
+        for image in post.images.all():
+            part_ix = upload_with_binary(session_token, image.large, image.name)
+            set_post_part_insert(session_token, post_ix, part_ix)
+        set_post_part_update(session_token, post_ix)
+        set_post_part_update_comment(session_token, post_ix, post.comment)
+        set_post_options(session_token, post_ix, post.rating_code, post.source,
+                         ' '.join([f'#{t.name}' for t in post.tags.all()]))
+        set_post_complete(session_token, post_ix)
+        if post.queue:
+            set_post_queue(session_token, post_ix)
+        else:
+            set_post_publish(session_token, post_ix)
+        logger.info("POSTED!")
+    except Exception as e:
+        logger.error(e)
+    if post_ix:
+        post.nt_post_id = post_ix
+        post.save()
 
 
 # when we start saving the login on the session, we have to implement a retry mechanism on this task

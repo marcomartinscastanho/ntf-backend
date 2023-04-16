@@ -13,10 +13,15 @@ class Post(models.Model):
     blog = models.ForeignKey(Blog, blank=False, on_delete=models.CASCADE, related_name="posts")
     queue = models.BooleanField(blank=False, default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    nt_post_id = models.CharField(blank=True, null=True, max_length=16)
 
     @property
     def rating_code(self):
         return rating_code_converter(self.rating)
+
+    @property
+    def is_posted(self):
+        return self.nt_post_id != None
 
 
 def rating_code_converter(r: str) -> int:
