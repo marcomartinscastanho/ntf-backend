@@ -43,7 +43,7 @@ class IsPostedFilter(admin.SimpleListFilter):
 
 class TweetImageAdmin(admin.ModelAdmin):
     list_display = ['id', 'tweet_author', 'tweet_id', 'position',  'name', 'post', 'is_posted']
-    list_filter = [IsPostedFilter]
+    list_filter = [IsPostedFilter, 'tweet__author',]
 
     def tweet_author(self, obj):
         return obj.tweet.author

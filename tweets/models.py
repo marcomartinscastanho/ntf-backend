@@ -14,7 +14,7 @@ class Tweet(models.Model):
         return all([img.is_posted for img in self.images.all()])
 
     class Meta:
-        ordering = ['tweeted']
+        ordering = ['-tweeted']
 
 
 class TweetImage(models.Model):
