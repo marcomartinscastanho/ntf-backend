@@ -25,11 +25,12 @@ def post_to_newtumbl(post_id):
         else:
             set_post_publish(session_token, post_ix)
         logger.info("POSTED!")
+
+        if post_ix:
+            post.nt_post_id = post_ix
+            post.save()
     except Exception as e:
         logger.error(e)
-    if post_ix:
-        post.nt_post_id = post_ix
-        post.save()
 
 
 # when we start saving the login on the session, we have to implement a retry mechanism on this task

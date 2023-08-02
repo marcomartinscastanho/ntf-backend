@@ -4,6 +4,7 @@ from django.db import models
 class Tweet(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     author = models.CharField(max_length=100)
+    name = models.CharField(max_length=1000, blank=True)
     source = models.URLField()
     text = models.TextField(max_length=1000, blank=True)
     tweeted = models.DateTimeField()

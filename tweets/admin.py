@@ -8,8 +8,9 @@ class TweetImageInline(admin.StackedInline):
 
 
 class TweetAdmin(admin.ModelAdmin):
-    list_display = ['id', 'author', 'num_images', 'tweeted', 'is_posted']
+    list_display = ['id', 'author',  'num_images', 'tweeted', 'is_posted']
     list_filter = ['author']
+    search_fields = ('id',)
     readonly_fields = ['is_posted']
 
     inlines = [TweetImageInline]
@@ -44,6 +45,7 @@ class IsPostedFilter(admin.SimpleListFilter):
 class TweetImageAdmin(admin.ModelAdmin):
     list_display = ['id', 'tweet_author', 'tweet_id', 'position',  'name', 'post', 'is_posted']
     list_filter = [IsPostedFilter, 'tweet__author',]
+    search_fields = ('id',)
 
     def tweet_author(self, obj):
         return obj.tweet.author

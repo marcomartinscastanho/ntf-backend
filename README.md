@@ -12,5 +12,5 @@ The purpose of this project was simply to learn and practice useful technologies
 
 Clone this repository.  
 Create a virtual environment.  
-Install the `requirements.txt` inside the virtual environment.
+Install the `requirements.txt` inside the virtual environment.  
 Run the `migrations.sh` script in the root repository.
