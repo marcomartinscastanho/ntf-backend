@@ -135,3 +135,6 @@ bkp*.sqlite3
 # celery
 celerybeat-schedule.db
 dump.rdb
+
+# media files
+media/

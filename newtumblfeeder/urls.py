@@ -14,22 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework_simplejwt import views as jwt_views
+
 from . import views
 
 urlpatterns = [
-    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
-    path('admin/', admin.site.urls),
-    path('', views.api_root),
+    path("jet/", include("jet.urls", "jet")),  # Django JET URLS
+    path("admin/", admin.site.urls),
+    path("", views.api_root),
     path("posts/", include("posts.urls")),
     path("options/", include("options.urls")),
     path("tweets/", include("tweets.urls")),
     path("users/", include("users.urls")),
-    path('auth/', include('rest_framework.urls')),
-    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path("auth/", include("rest_framework.urls")),
+    path("api/token/", jwt_views.TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-admin.site.site_url = 'http://localhost:3000'  # Removes the 'View Site' link
+
+admin.site.site_url = "http://localhost:3000"  # Removes the 'View Site' link

@@ -1,44 +1,39 @@
+from django.db import transaction
 from rest_framework import serializers
-from .models import Tweet, TweetImage
+
+from tweets.models import Tweet, TweetImage
 
 
-class FilterIsNotPostedListSerializer(serializers.ListSerializer):
-    def to_representation(self, data):
-        data = data.filter(post__isnull=True)
-        return super(FilterIsNotPostedListSerializer, self).to_representation(data)
-
-
-class TweetImageSerializer(serializers.HyperlinkedModelSerializer):
-    tweet = serializers.ReadOnlyField(source='tweet.tid')
+class TweetImageSerializer(serializers.ModelSerializer):
+    tweet = serializers.ReadOnlyField(source="tweet.tid")
+    thumb = serializers.ImageField(max_length=None, use_url=True, source="thumbnail")
+    large = serializers.ImageField(max_length=None, use_url=True, source="large_image")
 
     class Meta:
         model = TweetImage
-        fields = ['url', 'id', 'name', 'tweet', 'thumb', 'large', 'position', 'is_posted']
+        fields = ["id", "name", "tweet", "thumb", "large", "position"]
 
 
 class ShortTweetImageSerializer(serializers.ModelSerializer):
+    thumb = serializers.ImageField(max_length=None, use_url=True, source="thumbnail")
+    large = serializers.ImageField(max_length=None, use_url=True, source="large_image")
+
     class Meta:
         model = TweetImage
-        fields = ['id', 'position', 'name',  'thumb', 'large']
-        list_serializer_class = FilterIsNotPostedListSerializer
+        fields = ["id", "position", "name", "thumb", "large"]
 
 
-class TweetSerializer(serializers.HyperlinkedModelSerializer):
+class TweetSerializer(serializers.ModelSerializer):
     images = ShortTweetImageSerializer(many=True)
 
     class Meta:
         model = Tweet
-        fields = ['url', 'id', 'author', 'name', 'source', 'text', 'tweeted', 'images']
+        fields = ["url", "id", "author", "name", "source", "text", "tweeted", "images"]
 
     def create(self, validated_data):
-        images_data = validated_data.pop('images')
-        tweet = Tweet.objects.create(**validated_data)
-        for pos, image_data in enumerate(images_data):
-            TweetImage.objects.create(tweet=tweet, **image_data, position=pos+1)
-        return tweet
-
-
-class ShortTweetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tweet
-        fields = ['id', 'author', 'source', 'text', 'tweeted']
+        with transaction.atomic():
+            images_data = validated_data.pop("images")
+            tweet = Tweet.objects.create(**validated_data)
+            for pos, image_data in enumerate(images_data, 1):
+                TweetImage.objects.create(tweet=tweet, **image_data, position=pos)
+            return tweet
