@@ -1,5 +1,6 @@
-from django.db import models
 import uuid
+
+from django.db import models
 
 
 class Blog(models.Model):
@@ -7,7 +8,7 @@ class Blog(models.Model):
     name = models.SlugField(max_length=50)
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -18,7 +19,7 @@ class Tag(models.Model):
     genres = models.ManyToManyField("self", blank=True, symmetrical=False, related_name="subgenres")
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

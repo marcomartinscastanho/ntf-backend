@@ -1,19 +1,20 @@
 from django.contrib import admin
+
 from .models import Blog, Tag
 
 
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name']
+    list_display = ["id", "name"]
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ['name', 'genres_list', 'num_posts']
+    list_display = ["name", "genres_list", "num_posts"]
 
     def genres_list(self, obj):
-        from django.utils.safestring import mark_safe
-        from django.shortcuts import resolve_url
         from django.contrib.admin.templatetags.admin_urls import admin_urlname
+        from django.shortcuts import resolve_url
         from django.urls import reverse
+        from django.utils.safestring import mark_safe
 
         # urls = []
         # for genre in obj.genres.all():
@@ -22,7 +23,8 @@ class TagAdmin(admin.ModelAdmin):
         # return ", ".join(urls)
 
         return ", ".join([str(g) for g in obj.genres.all()])
-    genres_list.short_description = 'genres'
+
+    genres_list.short_description = "genres"
 
 
 admin.site.register(Blog, BlogAdmin)

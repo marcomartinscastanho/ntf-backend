@@ -1,11 +1,12 @@
 from rest_framework import serializers
-from .models import Blog, Tag
+
+from options.models import Blog, Tag
 
 
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ['id',  'name']
+        fields = ["id", "name"]
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -14,4 +15,4 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ['name', 'genres', 'num_posts']
+        fields = ["name", "genres", "num_posts"]

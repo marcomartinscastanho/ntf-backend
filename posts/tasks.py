@@ -1,14 +1,27 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from .api import set_post_complete, set_post_compose, login, set_post_options, set_post_part_insert, set_post_part_update, set_post_part_update_comment, set_post_publish, set_post_queue, upload_with_binary, upload_with_url
-from .models import Post
+
+from posts.api import (
+    login,
+    set_post_complete,
+    set_post_compose,
+    set_post_options,
+    set_post_part_insert,
+    set_post_part_update,
+    set_post_part_update_comment,
+    set_post_publish,
+    set_post_queue,
+    upload_with_binary,
+    upload_with_url,
+)
+from posts.models import Post
 
 logger = get_task_logger(__name__)
 
 
 @shared_task(name="post_to_newtumbl")
 def post_to_newtumbl(post_id):
-    post = Post.objects.prefetch_related('images').get(pk=post_id)
+    post = Post.objects.prefetch_related("images").get(pk=post_id)
     try:
         session_token = login()
         post_ix = set_post_compose(session_token, post.blog.id)
@@ -17,8 +30,9 @@ def post_to_newtumbl(post_id):
             set_post_part_insert(session_token, post_ix, part_ix)
         set_post_part_update(session_token, post_ix)
         set_post_part_update_comment(session_token, post_ix, post.comment)
-        set_post_options(session_token, post_ix, post.rating_code, post.source,
-                         ' '.join([f'#{t.name}' for t in post.tags.all()]))
+        set_post_options(
+            session_token, post_ix, post.rating_code, post.source, " ".join([f"#{t.name}" for t in post.tags.all()])
+        )
         set_post_complete(session_token, post_ix)
         if post.queue:
             set_post_queue(session_token, post_ix)

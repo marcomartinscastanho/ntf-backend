@@ -1,7 +1,7 @@
-from rest_framework import generics
-from rest_framework import permissions
-from .models import Blog, Tag
-from .serializers import BlogSerializer, TagSerializer
+from rest_framework import generics, permissions
+
+from options.models import Blog, Tag
+from options.serializers import BlogSerializer, TagSerializer
 
 
 class BlogList(generics.ListCreateAPIView):
