@@ -1,10 +1,40 @@
 from django.contrib import admin
 from django.db.models import Q
+from django.utils.html import format_html
 
 from tweets.models import Tweet, TweetImage
 
 
-class TweetImageInline(admin.StackedInline):
+class ImageDisplayMixin:
+    """
+    A mixin to display a clickable thumbnail in the admin interface.
+    Assumes the model has `thumbnail` and `large_image` fields.
+    Automatically adds `image` to readonly_fields.
+    """
+
+    def image(self, obj):
+        if hasattr(obj, "thumbnail") and hasattr(obj, "large_image"):
+            if obj.thumbnail and obj.large_image:
+                return format_html(
+                    '<a href="{}" target="_blank">' '<img src="{}" style="max-height: 300px; max-width: 300px;" /></a>',
+                    obj.large_image.url,  # Link to large image
+                    obj.thumbnail.url,  # Display thumbnail
+                )
+        return None
+
+    image.short_description = "Image"
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = list(super(ImageDisplayMixin, self).get_readonly_fields(request, obj))
+        return readonly_fields + ["image"]
+
+    def get_exclude(self, request, obj=...):
+        exclude = super(ImageDisplayMixin, self).get_exclude(request, obj)
+        exclude = list(exclude) if exclude else []
+        return exclude + ["thumbnail", "large_image"]
+
+
+class TweetImageInline(ImageDisplayMixin, admin.StackedInline):
     model = TweetImage
     extra = 0
 
@@ -59,7 +89,7 @@ class HasImageFilter(admin.SimpleListFilter):
             )
 
 
-class TweetImageAdmin(admin.ModelAdmin):
+class TweetImageAdmin(ImageDisplayMixin, admin.ModelAdmin):
     list_display = ["id", "tweet_author", "tweet_id", "position", "name", "post", "is_posted"]
     list_filter = [
         HasImageFilter,
