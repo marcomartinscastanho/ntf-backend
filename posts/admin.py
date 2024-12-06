@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from posts.models import Post
+from tweets.admin import TweetImageInline
 
 
 class IsPostedFilter(admin.SimpleListFilter):
@@ -19,8 +20,22 @@ class IsPostedFilter(admin.SimpleListFilter):
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ["id", "tweet", "source", "num_images", "rating", "blog", "is_posted"]
+    readonly_fields = [
+        "id",
+        "comment",
+        "tweet",
+        "source",
+        "num_images",
+        "rating",
+        "blog",
+        "is_posted",
+        "nt_post_id",
+        "tags",
+        "queue",
+    ]
     list_filter = [IsPostedFilter]
     search_fields = ("id",)
+    inlines = (TweetImageInline,)
 
     def num_images(self, obj):
         return len(obj.images.all())
